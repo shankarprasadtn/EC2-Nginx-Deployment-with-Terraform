@@ -5,16 +5,33 @@ This repository contains the Terraform configuration for deploying an Nginx web 
 ## Infrastructure Overview
 
 ```mermaid
-graph TD
-    Internet((Internet)) -->|HTTP 80| SG[Security Group: nginx_web_sg]
-    Internet -->|SSH 22| SG
-    SG --> EC2[EC2 Instance: t2.micro]
-    EC2 -->|user_data| Nginx[Nginx Web Server]
+flowchart LR
+    %% Defining Styles
+    classDef internet fill:#00a4e4,stroke:#005b9f,stroke-width:2px,color:#fff,rx:20,ry:20
+    classDef sg fill:#f39c12,stroke:#d68910,stroke-width:2px,color:#fff
+    classDef ec2 fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    classDef vpc fill:#ecf0f1,stroke:#bdc3c7,stroke-width:2px,stroke-dasharray: 5 5
+
+    %% Nodes
+    A((Internet)):::internet
     
-    subgraph Default VPC
-        SG
-        EC2
+    subgraph AWS Cloud [AWS Cloud Region: ap-south-1]
+        direction TB
+        subgraph DefaultVPC [Default VPC]
+            direction LR
+            SG{Security Group<br/>Ports: 80, 22}:::sg
+            Instance[Ubuntu 20.04 LTS<br/>EC2: t2.micro]:::ec2
+            Nginx[(Nginx Web Server<br/>Custom index.html)]:::ec2
+        end
     end
+
+    %% Connections
+    A == "HTTP (Port 80)" ====> SG
+    A -. "SSH (Port 22)" .-> SG
+    SG ====> Instance
+    Instance ====> |"Boot user_data"| Nginx
+
+    class DefaultVPC vpc
 ```
 
 ## Resources Created
