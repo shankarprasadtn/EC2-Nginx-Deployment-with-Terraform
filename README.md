@@ -22,7 +22,15 @@ graph TD
 1. **AWS Provider**: Configured for `ap-south-1`.
 2. **EC2 Instance**: `t2.micro` running Ubuntu 20.04 LTS.
 3. **Security Group**: Allows inbound traffic on ports `80` (HTTP) and `22` (SSH), and all outbound traffic.
-4. **User Data Script**: Automatically installs Nginx and configures a custom `index.html` page.
+4. **User Data Script**: Automatically installs Nginx and configures a custom `index.html` page using the following commands during instance boot:
+   ```bash
+   #!/bin/bash
+   apt-get update
+   apt-get install -y nginx
+   echo "Welcome to the Terraform-managed Nginx Server on Ubuntu" > /var/www/html/index.html
+   systemctl start nginx
+   systemctl enable nginx
+   ```
 
 ## Prerequisites
 
