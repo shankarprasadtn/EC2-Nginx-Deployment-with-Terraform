@@ -51,7 +51,15 @@ flowchart LR
 
 ## Prerequisites
 
-- AWS CLI configured with valid credentials (`aws configure`).
+- AWS CLI configured with valid credentials. You can set this up by running:
+  ```bash
+  aws configure
+  ```
+  When prompted, enter your credentials:
+  - **AWS Access Key ID**: `YOUR_ACCESS_KEY`
+  - **AWS Secret Access Key**: `YOUR_SECRET_KEY`
+  - **Default region name**: `ap-south-1`
+  - **Default output format**: `json`
 - Terraform CLI installed. If you are using Ubuntu, you can install Terraform using the following commands:
   ```bash
   sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
